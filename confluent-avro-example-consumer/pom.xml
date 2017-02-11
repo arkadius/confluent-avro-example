@@ -13,26 +13,33 @@
     <version>0.1.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>net.coatli.confluent</groupId>
-  <artifactId>confluent-avro-producer</artifactId>
+  <groupId>net.coatli.confluent.confluent-avro-example</groupId>
+  <artifactId>confluent-avro-example-consumer</artifactId>
   <version>0.1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>Confluent AVRO Producer</name>
-  <description>Generic Confluent AVRO Producer example</description>
+  <name>Confluent AVRO Consumer</name>
+  <description>Generic Confluent AVRO Consumer example</description>
 
   <properties>
-    <main.class>net.coatli.confluent.ConfluentAvroProducerApplication</main.class>
+    <main.class>net.coatli.confluent.ConfluentAvroConsumerApplication</main.class>
+    
+    <confluent.avro.example.domain.version>0.1.0-SNAPSHOT</confluent.avro.example.domain.version>
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>net.coatli.confluent.confluent-avro-example</groupId>
+      <artifactId>confluent-avro-example-domain</artifactId>
+      <version>${confluent.avro.example.domain.version}</version>
+    </dependency>
     <dependency>
       <groupId>io.confluent</groupId>
       <artifactId>kafka-avro-serializer</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.kafka</groupId>
-      <artifactId>kafka-clients</artifactId>
+      <artifactId>kafka_${kafka.scala.version}</artifactId>
     </dependency>
   </dependencies>
 

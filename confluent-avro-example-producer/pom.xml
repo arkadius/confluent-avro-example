@@ -13,19 +13,26 @@
     <version>0.1.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>net.coatli.confluent</groupId>
-  <artifactId>confluent-avro-consumer</artifactId>
+  <groupId>net.coatli.confluent.confluent-avro-example</groupId>
+  <artifactId>confluent-avro-example-producer</artifactId>
   <version>0.1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>Confluent AVRO Consumer</name>
-  <description>Generic Confluent AVRO Consumer example</description>
+  <name>Confluent AVRO Producer</name>
+  <description>Generic Confluent AVRO Producer example</description>
 
   <properties>
-    <main.class>net.coatli.confluent.ConfluentAvroConsumerApplication</main.class>
+    <main.class>net.coatli.confluent.ConfluentAvroProducerApplication</main.class>
+    
+    <confluent.avro.example.domain.version>0.1.0-SNAPSHOT</confluent.avro.example.domain.version>
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>net.coatli.confluent.confluent-avro-example</groupId>
+      <artifactId>confluent-avro-example-domain</artifactId>
+      <version>${confluent.avro.example.domain.version}</version>
+    </dependency>
     <dependency>
       <groupId>io.confluent</groupId>
       <artifactId>kafka-avro-serializer</artifactId>
