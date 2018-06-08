@@ -15,14 +15,18 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 
 import net.coatli.confluent.domain.Item;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 public class ConfluentAvroProducerApplication {
 
-  public static void main(final String[] args) {
+  public static void main(final String[] args) throws Exception {
 
-    int FIELDS = Integer.parseInt(args[0]);
-    int TOTAL_ITEMS = Integer.parseInt(args[1]);
-    int BATCH = Integer.parseInt(args[2]);
-    int THREADS = Integer.parseInt(args[3]);
+    final int FIELDS = Integer.parseInt(args[0]);
+    final int TOTAL_ITEMS = Integer.parseInt(args[1]);
+    final int BATCH = Integer.parseInt(args[2]);
+    final int THREADS = Integer.parseInt(args[3]);
 
     final Properties props = new Properties();
     props.put("bootstrap.servers", "localhost:9092");
@@ -56,11 +60,19 @@ public class ConfluentAvroProducerApplication {
       record.put("field" + i, i);
     }
 
+    ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(THREADS);
+
     long before = System.currentTimeMillis();
+
     for (int i = 0; i < TOTAL_ITEMS; i++) {
-      producer.send(new ProducerRecord<Integer, GenericRecord>("items" + FIELDS, i, record));
+      final int j = i;
+      executor.execute(() -> {
+        producer.send(new ProducerRecord<Integer, GenericRecord>("items" + FIELDS, j, record));
+      });
     }
 
+    executor.shutdown();
+    executor.awaitTermination(100, TimeUnit.SECONDS);
     producer.close();
     System.out.println("Sending " + TOTAL_ITEMS + " elements took: " + (System.currentTimeMillis() - before));
   }
